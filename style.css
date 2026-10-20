@@ -68,43 +68,6 @@ button {
     display: none !important;
 }
 
-.music-control {
-    position: fixed;
-    z-index: 20;
-    right: 1rem;
-    bottom: 1rem;
-    display: grid;
-    justify-items: end;
-    gap: 0.4rem;
-}
-
-.music-control[hidden] {
-    display: none;
-}
-
-#music-toggle {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 999px;
-    padding: 0.75rem 1.1rem;
-    color: var(--text);
-    background: rgba(45, 17, 38, 0.92);
-    box-shadow: 0 8px 24px var(--shadow);
-    cursor: pointer;
-}
-
-#music-toggle:hover,
-#music-toggle:focus-visible {
-    background: rgba(255, 111, 181, 0.9);
-}
-
-.music-status {
-    max-width: min(80vw, 22rem);
-    color: var(--text);
-    font-size: 0.82rem;
-    text-align: right;
-    text-shadow: 0 1px 6px var(--shadow);
-}
-
 #opening-screen,
 #reveal-screen {
     display: flex;

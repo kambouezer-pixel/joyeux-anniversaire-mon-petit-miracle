@@ -4,10 +4,6 @@ const storySection = document.getElementById('story');
 const surpriseButton = document.getElementById('open-surprise');
 const videoGroupsContainer = document.getElementById('video-groups');
 const backgroundMusic = document.getElementById('background-music');
-const musicControl = document.getElementById('music-control');
-const musicToggle = document.getElementById('music-toggle');
-const musicStatus = document.getElementById('music-status');
-let musicIsPlaying = false;
 let activeVideo = null;
 
 const birthdayFinale = document.getElementById('birthday-finale');
@@ -143,18 +139,10 @@ function buildVideoGallery() {
     });
 }
 
-function updateMusicControl() {
-    musicToggle.textContent = musicIsPlaying ? '⏸ Mettre la musique en pause' : '🎵 Écouter la musique';
-    musicToggle.setAttribute('aria-pressed', String(musicIsPlaying));
-}
-
 async function playMusic() {
-    musicStatus.textContent = 'La musique se prépare…';
-
     try {
         await backgroundMusic.play();
     } catch (error) {
-        musicStatus.textContent = 'La musique n’a pas pu démarrer. Appuie sur le bouton pour réessayer.';
         console.warn('La lecture de la musique a échoué.', error);
     }
 }
@@ -170,42 +158,22 @@ function revealStory() {
 }
 
 surpriseButton.addEventListener('click', () => {
-    musicControl.hidden = false;
     playMusic();
     revealStory();
 });
 
-musicToggle.addEventListener('click', () => {
-    if (backgroundMusic.paused) {
-        playMusic();
-    } else {
-        backgroundMusic.pause();
-        updateMusicControl();
-    }
-});
-
 backgroundMusic.addEventListener('error', () => {
-    musicIsPlaying = false;
-    musicStatus.textContent = 'La musique ne peut pas être chargée. Réessaie dans un instant.';
-    updateMusicControl();
     console.error('Impossible de charger le fichier musical.', backgroundMusic.error);
 });
 
-backgroundMusic.addEventListener('playing', () => {
-    musicIsPlaying = true;
-    musicStatus.textContent = '';
-    updateMusicControl();
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        backgroundMusic.pause();
+    }
 });
 
-backgroundMusic.addEventListener('waiting', () => {
-    musicIsPlaying = false;
-    musicStatus.textContent = 'La musique se prépare…';
-    updateMusicControl();
-});
-
-backgroundMusic.addEventListener('pause', () => {
-    musicIsPlaying = false;
-    updateMusicControl();
+window.addEventListener('pagehide', () => {
+    backgroundMusic.pause();
 });
 
 buildVideoGallery();
