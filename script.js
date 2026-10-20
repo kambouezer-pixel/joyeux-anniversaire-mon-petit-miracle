@@ -3,6 +3,10 @@ const revealScreen = document.getElementById('reveal-screen');
 const storySection = document.getElementById('story');
 const surpriseButton = document.getElementById('open-surprise');
 const videoGroupsContainer = document.getElementById('video-groups');
+const backgroundMusic = document.getElementById('background-music');
+const musicControl = document.getElementById('music-control');
+const musicToggle = document.getElementById('music-toggle');
+const musicStatus = document.getElementById('music-status');
 let activeVideo = null;
 
 const birthdayFinale = document.getElementById('birthday-finale');
@@ -138,31 +142,23 @@ function buildVideoGallery() {
     });
 }
 
-function playMusic() {
-    const fallbackSources = [
-        'music/musique.mp3',
-        'music/raindance.mp3',
-        'assets/music/Raindance .m4a.mp4',
-        'assets/music/raindance.mp3'
-    ];
+function updateMusicControl() {
+    const isPlaying = !backgroundMusic.paused;
+    musicToggle.textContent = isPlaying ? '⏸ Mettre la musique en pause' : '🎵 Écouter la musique';
+    musicToggle.setAttribute('aria-pressed', String(isPlaying));
+}
 
-    let index = 0;
+async function playMusic() {
+    musicStatus.textContent = '';
 
-    const tryNextSource = () => {
-        if (index >= fallbackSources.length) return;
-
-        const source = fallbackSources[index];
-        const audio = new Audio(source);
-        audio.preload = 'auto';
-        audio.volume = 0.5;
-
-        audio.play().catch(() => {
-            index += 1;
-            tryNextSource();
-        });
-    };
-
-    tryNextSource();
+    try {
+        await backgroundMusic.play();
+        updateMusicControl();
+    } catch (error) {
+        musicStatus.textContent = 'Appuie sur le bouton pour lancer la musique.';
+        updateMusicControl();
+        console.warn('La lecture de la musique a échoué.', error);
+    }
 }
 
 function revealStory() {
@@ -176,8 +172,26 @@ function revealStory() {
 }
 
 surpriseButton.addEventListener('click', () => {
+    musicControl.hidden = false;
     playMusic();
     revealStory();
 });
+
+musicToggle.addEventListener('click', () => {
+    if (backgroundMusic.paused) {
+        playMusic();
+    } else {
+        backgroundMusic.pause();
+        updateMusicControl();
+    }
+});
+
+backgroundMusic.addEventListener('error', () => {
+    musicStatus.textContent = 'La musique ne peut pas être chargée. Réessaie dans un instant.';
+    console.error('Impossible de charger le fichier musical.', backgroundMusic.error);
+});
+
+backgroundMusic.addEventListener('play', updateMusicControl);
+backgroundMusic.addEventListener('pause', updateMusicControl);
 
 buildVideoGallery();
