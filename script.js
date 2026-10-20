@@ -223,6 +223,19 @@ function startBackgroundConfetti() {
         message.style.setProperty('--love-drift', `${Math.random() * 70 - 35}px`);
         background.appendChild(message);
     }
+
+    for (let index = 0; index < 24; index += 1) {
+        const name = document.createElement('span');
+        name.className = 'background-love-text';
+        name.textContent = 'Aliza';
+        name.style.setProperty('--love-left', `${5 + Math.random() * 90}%`);
+        name.style.setProperty('--love-top', `${Math.random() * 100}%`);
+        name.style.setProperty('--love-size', `${1 + Math.random() * 1.4}rem`);
+        name.style.setProperty('--love-duration', `${8 + Math.random() * 8}s`);
+        name.style.setProperty('--love-delay', `${Math.random() * -14}s`);
+        name.style.setProperty('--love-drift', `${Math.random() * 70 - 35}px`);
+        background.appendChild(name);
+    }
 }
 
 surpriseButton.addEventListener('click', async () => {
