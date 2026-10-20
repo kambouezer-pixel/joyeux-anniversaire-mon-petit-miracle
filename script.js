@@ -4,7 +4,6 @@ const storySection = document.getElementById('story');
 const surpriseButton = document.getElementById('open-surprise');
 const videoGroupsContainer = document.getElementById('video-groups');
 const backgroundMusic = document.getElementById('background-music');
-let activeVideo = null;
 
 const birthdayFinale = document.getElementById('birthday-finale');
 const finaleConfetti = birthdayFinale.querySelector('.final-confetti');
@@ -40,19 +39,9 @@ const videoObserver = new IntersectionObserver((entries) => {
         const video = entry.target;
 
         if (entry.isIntersecting) {
-            if (activeVideo && activeVideo !== video) {
-                activeVideo.pause();
-            }
-
-            activeVideo = video;
             video.play().catch((error) => {
                 console.warn('La lecture automatique de cette vidéo a été bloquée par le navigateur.', error);
             });
-        } else {
-            video.pause();
-            if (activeVideo === video) {
-                activeVideo = null;
-            }
         }
     });
 }, { threshold: 0.5 });
