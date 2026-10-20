@@ -193,7 +193,6 @@ function createSurpriseBurst() {
 
 function startBackgroundConfetti() {
     const background = document.getElementById('background-confetti');
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     background.replaceChildren();
     background.classList.remove('hidden');

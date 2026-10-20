@@ -847,4 +847,14 @@ button {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
+
+    .background-confetti-piece {
+        animation-duration: 16s !important;
+        animation-iteration-count: infinite !important;
+    }
+
+    .background-love-text {
+        animation-duration: 18s !important;
+        animation-iteration-count: infinite !important;
+    }
 }
