@@ -157,8 +157,48 @@ function revealStory() {
     }, 1700);
 }
 
-surpriseButton.addEventListener('click', () => {
+function createSurpriseBurst() {
+    const burst = document.getElementById('surprise-burst');
+    const buttonBounds = surpriseButton.getBoundingClientRect();
+    const originX = buttonBounds.left + buttonBounds.width / 2;
+    const originY = buttonBounds.top + buttonBounds.height / 2;
+    const particleCount = 96;
+
+    burst.replaceChildren();
+    burst.style.setProperty('--burst-origin-x', `${originX}px`);
+    burst.style.setProperty('--burst-origin-y', `${originY}px`);
+    burst.classList.remove('hidden');
+    burst.classList.add('is-bursting');
+
+    for (let index = 0; index < particleCount; index += 1) {
+        const particle = document.createElement('span');
+        const angle = (Math.PI * 2 * index) / particleCount + (Math.random() - 0.5) * 0.3;
+        const distance = 100 + Math.random() * Math.max(window.innerWidth, window.innerHeight) * 0.48;
+        const isSparkle = index % 3 === 0;
+
+        particle.className = isSparkle ? 'burst-particle burst-sparkle' : 'burst-particle burst-confetti';
+        particle.textContent = isSparkle ? '✦' : '';
+        particle.style.left = `${originX}px`;
+        particle.style.top = `${originY}px`;
+        particle.style.setProperty('--burst-x', `${Math.cos(angle) * distance}px`);
+        particle.style.setProperty('--burst-y', `${Math.sin(angle) * distance}px`);
+        particle.style.setProperty('--particle-size', `${6 + Math.random() * 13}px`);
+        particle.style.setProperty('--particle-delay', `${Math.random() * 100}ms`);
+        particle.style.setProperty('--particle-color', ['#fff4c2', '#ffd166', '#ff85b7', '#ffffff', '#c9a7ff'][index % 5]);
+        burst.appendChild(particle);
+    }
+
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 100 : 1100;
+}
+
+surpriseButton.addEventListener('click', async () => {
+    surpriseButton.disabled = true;
+    const burstDuration = createSurpriseBurst();
     playMusic();
+
+    await new Promise((resolve) => window.setTimeout(resolve, burstDuration));
+    document.getElementById('surprise-burst').classList.add('hidden');
+    document.getElementById('surprise-burst').classList.remove('is-bursting');
     revealStory();
 });
 
