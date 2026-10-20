@@ -7,6 +7,7 @@ const backgroundMusic = document.getElementById('background-music');
 const musicControl = document.getElementById('music-control');
 const musicToggle = document.getElementById('music-toggle');
 const musicStatus = document.getElementById('music-status');
+let musicIsPlaying = false;
 let activeVideo = null;
 
 const birthdayFinale = document.getElementById('birthday-finale');
@@ -143,20 +144,17 @@ function buildVideoGallery() {
 }
 
 function updateMusicControl() {
-    const isPlaying = !backgroundMusic.paused;
-    musicToggle.textContent = isPlaying ? '⏸ Mettre la musique en pause' : '🎵 Écouter la musique';
-    musicToggle.setAttribute('aria-pressed', String(isPlaying));
+    musicToggle.textContent = musicIsPlaying ? '⏸ Mettre la musique en pause' : '🎵 Écouter la musique';
+    musicToggle.setAttribute('aria-pressed', String(musicIsPlaying));
 }
 
 async function playMusic() {
-    musicStatus.textContent = '';
+    musicStatus.textContent = 'La musique se prépare…';
 
     try {
         await backgroundMusic.play();
-        updateMusicControl();
     } catch (error) {
-        musicStatus.textContent = 'Appuie sur le bouton pour lancer la musique.';
-        updateMusicControl();
+        musicStatus.textContent = 'La musique n’a pas pu démarrer. Appuie sur le bouton pour réessayer.';
         console.warn('La lecture de la musique a échoué.', error);
     }
 }
@@ -187,11 +185,27 @@ musicToggle.addEventListener('click', () => {
 });
 
 backgroundMusic.addEventListener('error', () => {
+    musicIsPlaying = false;
     musicStatus.textContent = 'La musique ne peut pas être chargée. Réessaie dans un instant.';
+    updateMusicControl();
     console.error('Impossible de charger le fichier musical.', backgroundMusic.error);
 });
 
-backgroundMusic.addEventListener('play', updateMusicControl);
-backgroundMusic.addEventListener('pause', updateMusicControl);
+backgroundMusic.addEventListener('playing', () => {
+    musicIsPlaying = true;
+    musicStatus.textContent = '';
+    updateMusicControl();
+});
+
+backgroundMusic.addEventListener('waiting', () => {
+    musicIsPlaying = false;
+    musicStatus.textContent = 'La musique se prépare…';
+    updateMusicControl();
+});
+
+backgroundMusic.addEventListener('pause', () => {
+    musicIsPlaying = false;
+    updateMusicControl();
+});
 
 buildVideoGallery();
