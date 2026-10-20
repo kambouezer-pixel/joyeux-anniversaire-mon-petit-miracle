@@ -162,7 +162,7 @@ function createSurpriseBurst() {
     const buttonBounds = surpriseButton.getBoundingClientRect();
     const originX = buttonBounds.left + buttonBounds.width / 2;
     const originY = buttonBounds.top + buttonBounds.height / 2;
-    const particleCount = 96;
+    const particleCount = 720;
 
     burst.replaceChildren();
     burst.style.setProperty('--burst-origin-x', `${originX}px`);
