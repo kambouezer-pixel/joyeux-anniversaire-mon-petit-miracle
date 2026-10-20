@@ -210,6 +210,19 @@ function startBackgroundConfetti() {
         piece.style.setProperty('--confetti-rotation', `${Math.random() * 360}deg`);
         background.appendChild(piece);
     }
+
+    for (let index = 0; index < 24; index += 1) {
+        const message = document.createElement('span');
+        message.className = 'background-love-text';
+        message.textContent = 'Je t’aime';
+        message.style.setProperty('--love-left', `${5 + Math.random() * 90}%`);
+        message.style.setProperty('--love-top', `${Math.random() * 100}%`);
+        message.style.setProperty('--love-size', `${0.8 + Math.random() * 1.1}rem`);
+        message.style.setProperty('--love-duration', `${7 + Math.random() * 8}s`);
+        message.style.setProperty('--love-delay', `${Math.random() * -12}s`);
+        message.style.setProperty('--love-drift', `${Math.random() * 70 - 35}px`);
+        background.appendChild(message);
+    }
 }
 
 surpriseButton.addEventListener('click', async () => {

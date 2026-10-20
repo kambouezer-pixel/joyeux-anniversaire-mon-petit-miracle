@@ -89,6 +89,36 @@ button {
     animation: backgroundConfettiFall var(--confetti-duration) linear var(--confetti-delay) infinite;
 }
 
+.background-love-text {
+    position: absolute;
+    top: var(--love-top);
+    left: var(--love-left);
+    color: rgba(255, 215, 230, 0.52);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--love-size);
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    opacity: 0;
+    text-shadow: 0 0 16px rgba(255, 111, 181, 0.34);
+    animation: backgroundLoveFloat var(--love-duration) ease-in-out var(--love-delay) infinite;
+}
+
+@keyframes backgroundLoveFloat {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0) scale(0.9);
+    }
+    18%, 78% {
+        opacity: 0.72;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--love-drift), -28px, 0) scale(1.08);
+    }
+}
+
 @keyframes backgroundConfettiFall {
     0% {
         opacity: 0;
