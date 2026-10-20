@@ -191,9 +191,31 @@ function createSurpriseBurst() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 100 : 1100;
 }
 
+function startBackgroundConfetti() {
+    const background = document.getElementById('background-confetti');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    background.replaceChildren();
+    background.classList.remove('hidden');
+
+    for (let index = 0; index < 110; index += 1) {
+        const piece = document.createElement('span');
+        piece.className = 'background-confetti-piece';
+        piece.style.setProperty('--confetti-left', `${Math.random() * 100}%`);
+        piece.style.setProperty('--confetti-size', `${5 + Math.random() * 9}px`);
+        piece.style.setProperty('--confetti-duration', `${7 + Math.random() * 9}s`);
+        piece.style.setProperty('--confetti-delay', `${Math.random() * -16}s`);
+        piece.style.setProperty('--confetti-drift', `${Math.random() * 180 - 90}px`);
+        piece.style.setProperty('--confetti-color', ['#fff4c2', '#ffd166', '#ff85b7', '#ffffff', '#c9a7ff'][index % 5]);
+        piece.style.setProperty('--confetti-rotation', `${Math.random() * 360}deg`);
+        background.appendChild(piece);
+    }
+}
+
 surpriseButton.addEventListener('click', async () => {
     surpriseButton.disabled = true;
     const burstDuration = createSurpriseBurst();
+    startBackgroundConfetti();
     playMusic();
 
     await new Promise((resolve) => window.setTimeout(resolve, burstDuration));
