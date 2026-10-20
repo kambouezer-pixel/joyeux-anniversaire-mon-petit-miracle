@@ -109,7 +109,6 @@ function buildVideoGallery() {
             const player = document.createElement('video');
             player.src = encodeURI(video.folder + '/' + video.fileName);
             player.controls = true;
-            player.autoplay = true;
             player.muted = true;
             player.playsInline = true;
             player.preload = 'metadata';
